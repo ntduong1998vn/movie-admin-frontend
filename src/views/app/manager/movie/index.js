@@ -2,11 +2,16 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 const MovieList = React.lazy(() =>
-    import(/* webpackChunkName: "product-image-list" */ './movie-list')
+    import(/* webpackChunkName: "movie-image-list" */ './MovieList')
+);
+const MovieDetail = React.lazy(() =>
+    import(/* webpackChunkName: "movie-detail" */ './MovieDetail')
+);
+const MovieForm = React.lazy(() =>
+    import(/* webpackChunkName: "forms-validations" */ './validations')
 );
 
-
-function ProductPages({ match }) {
+function MoviePages({ match }) {
     return (
         <Suspense fallback={<div className="loading" />}>
             <Switch>
@@ -15,11 +20,15 @@ function ProductPages({ match }) {
                     path={`${match.url}/movie-list`}
                     render={props => <MovieList {...props} />}
                 />
-                {/* <Route
-                    path={`${match.url}/details`}
-                    render={props => <Details {...props} />}
+                <Route
+                    path={`${match.url}/new-movie`}
+                    render={props => <MovieForm {...props} />}
                 />
                 <Route
+                    path={`${match.url}/:id`}
+                    render={props => <MovieDetail {...props} />}
+                />
+                {/* <Route
                     path={`${match.url}/details-alt`}
                     render={props => <DetailsAlt {...props} />}
                 /> */}
@@ -29,4 +38,4 @@ function ProductPages({ match }) {
     )
 }
 
-export default ProductPages
+export default MoviePages

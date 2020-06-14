@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Row } from "reactstrap";
 import axios from "axios";
 
-import { servicePath } from "../../../../constants/defaultValues";
+import { serverPath } from "../../../../constants/defaultValues";
 
 import Pagination from "../../../../containers/manager/Pagination";
 import ContextMenuContainer from "../../../../containers/manager/ContextMenuContainer";
@@ -14,9 +14,9 @@ import AddNewModal from "../../../../containers/manager/AddNewModal";
 function collect(props) {
   return { data: props.data };
 }
-const apiUrl = servicePath + "/cakes/paging";
+const apiUrl = serverPath + "/api/movie/";
 
-class ThumbListPages extends Component {
+class MovieListPages extends Component {
 
   constructor(props) {
     super(props);
@@ -27,19 +27,21 @@ class ThumbListPages extends Component {
 
       selectedPageSize: 8,
       orderOptions: [
-        { column: "title", label: "Product Name" },
-        { column: "category", label: "Category" },
-        { column: "status", label: "Status" }
+        { column: "title", label: "Tên Phim" },
+        { column: "genre", label: "Thể loại" },
+        { column: "view", label: "Lượt xem" },
+        { column: "release_date", label: "Công chiếu" },
       ],
       pageSizes: [8, 12, 24],
 
       categories: [
         { label: "Cakes", value: "Cakes", key: 0 },
         { label: "Cupcakes", value: "Cupcakes", key: 1 },
+        { label: "Desserts", value: "Desserts", key: 2 },
         { label: "Desserts", value: "Desserts", key: 2 }
       ],
 
-      selectedOrderOption: { column: "title", label: "Product Name" },
+      selectedOrderOption: { column: "title", label: "Tên phim" },
       dropdownSplitOpen: false,
       modalOpen: false,
       currentPage: 1,
@@ -210,10 +212,10 @@ class ThumbListPages extends Component {
       })
       .then(data => {
         this.setState({
-          totalPage: data.totalPage,
-          items: data.data,
+          totalPage: data.totalPages,
+          items: data.content,
           selectedItems: [],
-          totalItemCount: data.totalItem,
+          totalItemCount: data.totalElements,
           isLoading: true
         });
       });
@@ -287,13 +289,13 @@ class ThumbListPages extends Component {
               categories={categories}
             />
             <Row>
-              {this.state.items.map(product => {
+              {this.state.items.map(movie => {
                 if (this.state.displayMode === "imagelist") {
                   return (
                     <ImageListView
-                      key={product.id}
-                      product={product}
-                      isSelect={this.state.selectedItems.includes(product.id)}
+                      key={movie.id}
+                      movie={movie}
+                      isSelect={this.state.selectedItems.includes(movie.id)}
                       collect={collect}
                       onCheckItem={this.onCheckItem}
                     />
@@ -301,9 +303,9 @@ class ThumbListPages extends Component {
                 } else if (this.state.displayMode === "thumblist") {
                   return (
                     <ThumbListView
-                      key={product.id}
-                      product={product}
-                      isSelect={this.state.selectedItems.includes(product.id)}
+                      key={movie.id}
+                      movie={movie}
+                      isSelect={this.state.selectedItems.includes(movie.id)}
                       collect={collect}
                       onCheckItem={this.onCheckItem}
                     />
@@ -326,4 +328,4 @@ class ThumbListPages extends Component {
       );
   }
 }
-export default ThumbListPages;
+export default MovieListPages;

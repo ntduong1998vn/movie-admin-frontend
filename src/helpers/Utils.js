@@ -17,8 +17,8 @@ export const getDateWithFormat = () => {
   const today = new Date();
   let dd = today.getDate();
   let mm = today.getMonth() + 1; //January is 0!
+  let yyyy = today.getFullYear();
 
-  var yyyy = today.getFullYear();
   if (dd < 10) {
     dd = '0' + dd;
   }
@@ -28,7 +28,7 @@ export const getDateWithFormat = () => {
   return dd + '.' + mm + '.' + yyyy;
 }
 
-export const getCurrentTime=()=>{
+export const getCurrentTime = () => {
   const now = new Date();
   return now.getHours() + ":" + now.getMinutes()
 }
